@@ -59,7 +59,7 @@ public class User : MonoBehaviour
     protected void SceneSet(GameObject playerobj)
     {
         //Debug.Log(playerObj);
-        if (SceneTransitions.OldSceneName == SceneTransitions.SceneName.INTERVAL.ToString().ToLower())
+        if (SceneTransitions.OldSceneName == SceneTransitions.GetSceneName(SceneTransitions.SceneName.INTERVAL))
         {
             //Debug.Log("デストロイ解除");
             UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(playerObj,

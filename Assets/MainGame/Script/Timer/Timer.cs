@@ -10,6 +10,7 @@ using UnityEngine.UI;
 
 public class Timer :MonoBehaviour
 {
+    static Timer instance;
     // UI Text指定用
     public Text UIText;
 
@@ -24,12 +25,34 @@ public class Timer :MonoBehaviour
 
     [SerializeField] Image timerImage;
     [SerializeField] GameObject timeupBgObj;
+    Color defaultTextColor = Color.white;
 
     // Start is called before the first frame update
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void OnDestroy()
+    {
+        if (instance == this)
+        {
+            instance = null;
+        }
+    }
+
     void Start()
     {
         count = countmax;
         countstop = false;
+        if (UIText != null)
+        {
+            defaultTextColor = UIText.color;
+        }
+        if (timeupBgObj != null)
+        {
+            timeupBgObj.SetActive(false);
+        }
     }
 
     // Update is called once per frame
@@ -40,7 +63,10 @@ public class Timer :MonoBehaviour
         if ((count <= 5) && (count > 0))
         {
             UIText.color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
-            timeupBgObj.SetActive(true);
+            if (timeupBgObj != null)
+            {
+                timeupBgObj.SetActive(true);
+            }
         }
         else if (count < 0)
         {
@@ -67,8 +93,25 @@ public class Timer :MonoBehaviour
         //Debug.Log(count);
     }
 
+    void ResetWarningVisuals()
+    {
+        if (UIText != null)
+        {
+            UIText.color = defaultTextColor;
+        }
+
+        if (timeupBgObj != null)
+        {
+            timeupBgObj.SetActive(false);
+        }
+    }
+
     public static void CountReset()
     {
         count = countmax;
+        if (instance != null)
+        {
+            instance.ResetWarningVisuals();
+        }
     }
 }

@@ -26,21 +26,30 @@ public class PassSystem : MonoBehaviour
 
         if (passitemid == -1) return;
 
+        bool passed = false;
+
         if (playerobj.GetComponent<User_A>())
         {
             //Debug.Log("Bに渡す");
             var item = ItemDataBase.Entity.GetData(passitemid);
             item.OwnerFlag = 2;
+            passed = true;
         }
         else if (playerobj.GetComponent<User_B>())
         {
             //Debug.Log("Aに渡す");
             var item = ItemDataBase.Entity.GetData(passitemid);
             item.OwnerFlag = 1;
+            passed = true;
         }
         else
         {
             return;
+        }
+
+        if (passed)
+        {
+            passitemid = -1;
         }
     }
 }
