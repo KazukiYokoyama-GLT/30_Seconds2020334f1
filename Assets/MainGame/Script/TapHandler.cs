@@ -56,36 +56,7 @@ public class TapHandler : MonoBehaviour
 
     IEnumerator ChangeScene()
     {
-        // 現在のシーン名に基づいて次のシーンを決定
-        string nextScene = "";
-        string currentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
-
-        if (currentSceneName == "Start")
-        {
-            nextScene = "title";
-        }
-        //else if (currentSceneName == "title")
-        //{
-        //    nextScene = "maingamefirst";
-        //}
-        //else if (currentSceneName == "maingamefirst")
-        //{
-        //    nextScene = "maingamelast";
-        //}
-        //else if (currentSceneName == "maingamelast")
-        //{
-        //    nextScene = "maingamefirst";
-        //}
-
-        // 非同期でシーンをロード
-        AsyncOperation asyncLoad = UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(nextScene);
-
-        // シーンのロードが完了するまで待つ
-        while (!asyncLoad.isDone)
-        {
-            yield return null;
-        }
-
-        // BGMの切り替えはSoundManagerのOnSceneLoadedで行われるため、ここでは不要
+        SceneTransitions.SceneLaod(SceneTransitions.SceneName.TITLE);
+        yield break;
     }
 }

@@ -34,6 +34,16 @@ public class SceneTransitions : MonoBehaviour
         MAINGAMELAST,
     }
 
+    static readonly Dictionary<SceneName, string> SceneNameMap = new Dictionary<SceneName, string>
+    {
+        { SceneName.TITLE, "title" },
+        { SceneName.INTERVAL, "interval" },
+        { SceneName.STORY, "story" },
+        { SceneName.ENDING, "ending" },
+        { SceneName.MAINGAMEFIRST, "maingamefirst" },
+        { SceneName.MAINGAMELAST, "maingamelast" },
+    };
+
 
     void Awake()
     {
@@ -58,7 +68,7 @@ public class SceneTransitions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (MainGameProgress.gameStaus != MainGameProgress.GameStaus.IntervalStart ||
+        if (MainGameProgress.gameStaus != MainGameProgress.GameStaus.IntervalStart &&
             MainGameProgress.gameStaus != MainGameProgress.GameStaus.IntervalEnd)
             nowscenename = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         //Debug.Log("現在のシーン:" + nowscenename);
@@ -69,10 +79,25 @@ public class SceneTransitions : MonoBehaviour
     /// シーン遷移
     /// </summary>
     /// <param name="scene">列挙型のシーン名</param>
+    public static string GetSceneName(SceneName scene)
+    {
+        if (SceneNameMap.TryGetValue(scene, out var sceneName))
+        {
+            return sceneName;
+        }
+
+        Debug.LogError($"Scene name mapping for {scene} is not defined.");
+        return string.Empty;
+    }
+
     public static void SceneLaod(SceneName scene)
     {
         oldscenename = nowscenename;
-        string sceneName = scene.ToString();
+        string sceneName = GetSceneName(scene);
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            return;
+        }
 
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
